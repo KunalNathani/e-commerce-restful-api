@@ -38,4 +38,12 @@ class Product extends Model
     {
         return $this->belongsTo(Seller::class);
     }
+
+    /*
+     * HELPER METHODS
+     */
+    public function isAvailable()
+    {
+        return $this->status === Product::AVAILABLE_PRODUCT;
+    }
 }
