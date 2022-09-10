@@ -9,4 +9,12 @@ class Seller extends User
 {
     use HasFactory;
     protected $table = "users";
+
+    /**
+    * RELATIONSHIP METHODS
+    */
+    public function products()
+    {
+        return $this->hasMany(Product::class);
+    }
 }
