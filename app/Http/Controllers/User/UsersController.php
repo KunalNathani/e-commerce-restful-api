@@ -2,42 +2,28 @@
 
 namespace App\Http\Controllers\User;
 
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\ApiController;
 use App\Models\User;
 use Illuminate\Http\Request;
 
-class UsersController extends Controller
+class UsersController extends ApiController
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function index()
     {
         $users = User::all();
-        return response()
-                ->json([
-                    'data' => $users,
-                    'count' => $users->count()
-                ], 200);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        return $this->showAll($users);
     }
 
     /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function store(Request $request)
     {
@@ -58,36 +44,19 @@ class UsersController extends Controller
 
         $user = User::create($data);
 
-        return response()
-                ->json([
-                    'data' => $user
-                ], 201);
+        return $this->showOne($user, 201);
     }
 
     /**
      * Display the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function show($id)
     {
         $user = User::findOrFail($id);
-        return response()
-                ->json([
-                    'data' => $user
-                ], 200);
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
+        return $this->showOne($user);
     }
 
     /**
@@ -95,7 +64,7 @@ class UsersController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function update(Request $request, $id)
     {
@@ -126,42 +95,29 @@ class UsersController extends Controller
 
         if($request->has('admin')) {
             if(!$user->isVerified()) {
-                return response()
-                    ->json([
-                        'error' => 'Only verified user can be admins!',
-                        'code' => 409
-                    ], 409);
+                return $this->errorResponse('Only verified user can be admins!', 409);
             }
         }
 
         if($user->isDirty()) {
-            return response()->json([
-                'error'=>'You need to update some data!',
-                'code'=>422
-            ], 422);
+            return $this->errorResponse('You need to update some data!', 422);
         }
 
         $user->save();
 
-        return response()
-                ->json([
-                    'data' => $user
-                ], 200);
+        return $this->showOne($user);
     }
 
     /**
      * Remove the specified resource from storage.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function destroy($id)
     {
         $user = User::findOrFail($id);
         $user->delete();
-        return response()
-                ->json([
-                    'data' => $user
-                ], 204);
+        return $this->showOne($user, 204);
     }
 }
