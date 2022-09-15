@@ -134,7 +134,7 @@ class UsersController extends Controller
             }
         }
 
-        if(!$user->isDirty()) {
+        if($user->isDirty()) {
             return response()->json([
                 'error'=>'You need to update some data!',
                 'code'=>422
