@@ -82,4 +82,9 @@ class User extends Authenticatable
     {
         $this->attributes['name'] = strtolower($name);
     }
+
+    public function setEmailAttribute($email)
+    {
+        $this->attributes['email'] = strtolower($email);
+    }
 }
