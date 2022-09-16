@@ -17,6 +17,15 @@ class Transaction extends Model
     ];
 
     /**
+     * The attributes that should be hidden for serialization.
+     *
+     * @var array<int, string>
+     */
+    protected $hidden = [
+        'deleted_at',
+    ];
+
+    /**
     * RELATIONSHIP METHODS
     */
     public function product()
