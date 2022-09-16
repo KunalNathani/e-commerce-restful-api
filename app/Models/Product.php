@@ -13,6 +13,11 @@ class Product extends Model
     const UNAVAILABLE_PRODUCT = 0;
     const AVAILABLE_PRODUCT = 1;
 
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
     protected $fillable = [
         'name',
         'description',
@@ -20,6 +25,15 @@ class Product extends Model
         'image',
         'status',
         'seller_id'
+    ];
+
+    /**
+     * The attributes that should be hidden for serialization.
+     *
+     * @var array<int, string>
+     */
+    protected $hidden = [
+        'deleted_at',
     ];
 
     /**
