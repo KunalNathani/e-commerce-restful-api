@@ -2,10 +2,17 @@
 
 namespace App\Http\Controllers\Category;
 
+use App\Http\Controllers\ApiController;
 use App\Http\Controllers\Controller;
+use App\Models\Category;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
-class CategoryProductsController extends Controller
+class CategoryProductsController extends ApiController
 {
-    //
+    public function index(Category $category): JsonResponse
+    {
+        $products = $category->products;
+        return $this->showAll($products);
+    }
 }
