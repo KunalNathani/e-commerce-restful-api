@@ -34,6 +34,7 @@ class Product extends Model
      */
     protected $hidden = [
         'deleted_at',
+        'pivot',
     ];
 
     /**
