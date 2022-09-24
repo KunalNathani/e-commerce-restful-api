@@ -27,6 +27,7 @@ class Category extends Model
      */
     protected $hidden = [
         'deleted_at',
+        'pivot',
     ];
 
     /**
