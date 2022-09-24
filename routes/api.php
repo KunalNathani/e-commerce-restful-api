@@ -28,3 +28,4 @@ Route::resource('buyers.categories', \App\Http\Controllers\Buyer\BuyerCategories
 
 Route::resource('categories.products', \App\Http\Controllers\Category\CategoryProductsController::class)->only(['index']);
 Route::resource('categories.sellers', \App\Http\Controllers\Category\CategorySellersController::class)->only(['index']);
+Route::resource('categories.transactions', \App\Http\Controllers\Category\CategoryTransactionsController::class)->only(['index']);
