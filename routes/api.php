@@ -24,3 +24,4 @@ Route::resource('transactions.sellers', \App\Http\Controllers\Transaction\Transa
 Route::resource('buyers.transactions', \App\Http\Controllers\Buyer\BuyerTransactionsController::class)->only(['index']);
 Route::resource('buyers.products', \App\Http\Controllers\Buyer\BuyerProductsController::class)->only(['index']);
 Route::resource('buyers.sellers', \App\Http\Controllers\Buyer\BuyerSellersController::class)->only(['index']);
+Route::resource('buyers.categories', \App\Http\Controllers\Buyer\BuyerCategoriesController::class)->only(['index']);
