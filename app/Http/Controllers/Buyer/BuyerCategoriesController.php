@@ -9,5 +9,15 @@ use Illuminate\Http\Request;
 
 class BuyerCategoriesController extends ApiController
 {
-    //
+    public function index(Buyer $buyer): JsonResponse
+    {
+        $categories = $buyer->transactions()
+                            ->with('product.categories')
+                            ->get()
+                            ->pluck('product.categories')
+                            ->flatten()
+                            ->unique();
+
+        return $this->showAll($categories);
+    }
 }
