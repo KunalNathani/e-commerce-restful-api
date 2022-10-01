@@ -3,10 +3,12 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Mail\UserCreated;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use Laravel\Sanctum\HasApiTokens;
 
@@ -19,6 +21,15 @@ class User extends Authenticatable
 
     const ADMIN_USER = true;
     CONST REGULAR_USER = false;
+
+    protected static function boot()
+    {
+        parent::boot();
+        self::created(function(User $user) {
+            Mail::to($user)->send(new UserCreated($user));
+        });
+    }
+
     /**
      * The attributes that are mass assignable.
      *
