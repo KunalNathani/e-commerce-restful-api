@@ -28,4 +28,11 @@ trait ResponseHelper
         $responseParams = ['data' => $collection, 'count' => $collection->count()];
         return $this->successResponse($responseParams, $statusCode);
     }
+
+    protected function showMessage(string $message, int $statusCode = 200)
+    {
+        $responseParams = ['data' => $message];
+        return $this->successResponse($responseParams, $statusCode);
+    }
+
 }
