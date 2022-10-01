@@ -31,3 +31,10 @@ Route::resource('categories.sellers', \App\Http\Controllers\Category\CategorySel
 Route::resource('categories.transactions', \App\Http\Controllers\Category\CategoryTransactionsController::class)->only(['index']);
 Route::resource('categories.buyers', \App\Http\Controllers\Category\CategoryBuyersController::class)->only(['index']);
 
+Route::resource('sellers.categories', \App\Http\Controllers\Seller\SellerCategoriesController::class)->only(['index']);
+Route::resource('sellers.buyers', \App\Http\Controllers\Seller\SellerBuyersController::class)->only(['index']);
+Route::resource('sellers.products', \App\Http\Controllers\Seller\SellerProductsController::class)->except(['create', 'edit', 'show']);
+Route::resource('products.transactions', \App\Http\Controllers\Product\ProductTransactionsController::class)->only(['index']);
+Route::resource('products.buyers', \App\Http\Controllers\Product\ProductBuyersController::class)->only(['index']);
+Route::resource('products.categories', \App\Http\Controllers\Product\ProductCategoriesController::class)->only(['index', 'update', 'destroy']);
+Route::resource('products.buyers.transactions', \App\Http\Controllers\Product\ProductBuyerTransactionsController::class)->only(['index', 'store']);

@@ -13,6 +13,17 @@ class Product extends Model
     const UNAVAILABLE_PRODUCT = 0;
     const AVAILABLE_PRODUCT = 1;
 
+    public static function boot()
+    {
+        parent::boot();
+        self::updated(function (Product $product) {
+            if($product->quantity === 0 && $product->isAvailable()) {
+                $product->status = Product::UNAVAILABLE_PRODUCT;
+                $product->save();
+            }
+        });
+    }
+
     /**
      * The attributes that are mass assignable.
      *
