@@ -9,6 +9,7 @@ use App\Models\Seller;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class SellerProductsController extends ApiController
@@ -31,7 +32,7 @@ class SellerProductsController extends ApiController
         $this->validate($request, $rules);
         $data = $request->all();
         $data['status'] = Product::UNAVAILABLE_PRODUCT;
-        $data['image'] = '1.jpg'; //TODO: file instead of string!
+        $data['image'] = $request->image->store('');
         $data['seller_id'] = $seller->id;
 
         $product = Product::create($data);
@@ -67,7 +68,10 @@ class SellerProductsController extends ApiController
             }
         }
 
-        // TODO: Update image if the image was passed.
+        if ($request->hasFile('image')) {
+            Storage::delete($product->image);
+            $product->image = $request->image->store('');
+        }
 
         if($product->isClean()) {
             throw new HttpException(422,"You have not updated anything");

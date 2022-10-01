@@ -56,6 +56,11 @@ return [
             'throw' => false,
         ],
 
+        'product' => [
+            'driver' => 'local',
+            'root' => public_path('img/products'),
+            'visibility' => 'public',
+        ]
     ],
 
     /*
