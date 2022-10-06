@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Mail\UserCreated;
+use App\Mail\UserMailChanged;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -27,6 +28,11 @@ class User extends Authenticatable
         parent::boot();
         self::created(function(User $user) {
             Mail::to($user)->send(new UserCreated($user));
+        });
+        self::updated(function (User $user) {
+            if($user->isDirty('email')) {
+                Mail::to($user)->send(new UserMailChanged($user));
+            }
         });
     }
 
