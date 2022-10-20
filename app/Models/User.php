@@ -27,7 +27,9 @@ class User extends Authenticatable
     {
         parent::boot();
         self::created(function(User $user) {
-            Mail::to($user)->send(new UserCreated($user));
+            retry(5, function () use($user){
+                Mail::to($user)->send(new UserCreated($user));
+            });
         });
         self::updated(function (User $user) {
             if($user->isDirty('email')) {
