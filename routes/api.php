@@ -13,6 +13,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('users/verify/{token}', [\App\Http\Controllers\User\UsersController::class, 'verify'])->name('verify');
+Route::get('users/{user}/resend', [\App\Http\Controllers\User\UsersController::class, 'resend'])->name('resend');
 Route::resource('users', \App\Http\Controllers\User\UsersController::class);
 Route::resource('buyers', \App\Http\Controllers\Buyer\BuyersController::class)->only(['index', 'show']);
 Route::resource('sellers', \App\Http\Controllers\Seller\SellersController::class)->only(['index', 'show']);

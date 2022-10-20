@@ -21,6 +21,11 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+        User::flushEventListeners();
+        Category::flushEventListeners();
+        Product::flushEventListeners();
+        Transaction::flushEventListeners();
+
         if(App::environment() === 'production')
             exit();
         DB::statement('SET FOREIGN_KEY_CHECKS = 0');
