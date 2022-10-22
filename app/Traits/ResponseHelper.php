@@ -19,12 +19,19 @@ trait ResponseHelper
 
     protected function showOne(Model $model, $statusCode = 200)
     {
+        $transformer = $model->getTransformer();
+        $model = $this->transformData($model, $transformer);
         $responseParams = ['data' => $model];
         return $this->successResponse($responseParams, $statusCode);
     }
 
     protected function showAll(Collection $collection, $statusCode = 200)
     {
+        if($collection->isEmpty()) {
+            return $this->successResponse(['data' => $collection], $statusCode);
+        }
+        $transformer = $collection->first()->transformer;
+        $collection = $this->transformData($collection, $transformer);
         $responseParams = ['data' => $collection, 'count' => $collection->count()];
         return $this->successResponse($responseParams, $statusCode);
     }
@@ -35,4 +42,9 @@ trait ResponseHelper
         return $this->successResponse($responseParams, $statusCode);
     }
 
+    private function transformData($data, $transformer)
+    {
+        $transformation = fractal($data, new $transformer);
+        return collect($transformation->toArray()['data']); # Note: 'data' key is passed automatically by transformer.
+    }
 }
