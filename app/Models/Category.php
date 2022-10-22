@@ -2,11 +2,11 @@
 
 namespace App\Models;
 
+use App\Transformers\CategoryTransformer;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Category extends Model
+class Category extends BaseModel
 {
     use HasFactory, SoftDeletes;
 
@@ -29,6 +29,8 @@ class Category extends Model
         'deleted_at',
         'pivot',
     ];
+
+    public $transformer = CategoryTransformer::class;
 
     /**
     * RELATIONSHIP METHODS

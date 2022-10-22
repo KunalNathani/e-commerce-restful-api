@@ -2,11 +2,11 @@
 
 namespace App\Models;
 
+use App\Transformers\TransactionTransformer;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Transaction extends Model
+class Transaction extends BaseModel
 {
     use HasFactory, SoftDeletes;
 
@@ -24,6 +24,8 @@ class Transaction extends Model
     protected $hidden = [
         'deleted_at',
     ];
+
+    public $transformer = TransactionTransformer::class;
 
     /**
     * RELATIONSHIP METHODS

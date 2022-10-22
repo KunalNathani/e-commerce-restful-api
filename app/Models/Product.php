@@ -2,16 +2,18 @@
 
 namespace App\Models;
 
+use App\Transformers\ProductTransformer;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Product extends Model
+class Product extends BaseModel
 {
     use HasFactory, SoftDeletes;
 
     const UNAVAILABLE_PRODUCT = 0;
     const AVAILABLE_PRODUCT = 1;
+
+    public $transformer = ProductTransformer::class;
 
     public static function boot()
     {

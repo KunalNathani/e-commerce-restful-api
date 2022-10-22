@@ -3,8 +3,11 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+
+use App\Interfaces\Transformable;
 use App\Mail\UserCreated;
 use App\Mail\UserMailChanged;
+use App\Transformers\UserTransformer;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -13,7 +16,7 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use Laravel\Sanctum\HasApiTokens;
 
-class User extends Authenticatable
+class User extends Authenticatable implements Transformable
 {
     use HasApiTokens, HasFactory, Notifiable, SoftDeletes;
 
@@ -72,6 +75,16 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    /**
+     * The transformer class associated with the model
+     */
+    public $transformer = UserTransformer::class;
+
+    public function getTransformer()
+    {
+        return $this->transformer;
+    }
 
     public function isVerified()
     {
