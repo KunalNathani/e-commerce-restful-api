@@ -45,4 +45,21 @@ class ProductTransformer extends TransformerAbstract
             'deletionDate' => isset($product->deleted_at) ? (string)$product->deleted_at : null
         ];
     }
+
+    public static function attributeMapper(string $key): ?string
+    {
+        $attributes = [
+            'identifier' => 'id',
+            'name' => 'name',
+            'productDesc' => 'description',
+            'productQuantity' => 'quantity',
+            'isAvailable' => 'status',
+            'productImage' => 'image',
+            'productSellerIdentifier' => 'seller_id',
+            'creationDate' => 'created_at',
+            'lastChangeDate' => 'updated_at',
+            'deletionDate' => 'deleted_at',
+        ];
+        return $attributes[$key] ?? null;
+    }
 }

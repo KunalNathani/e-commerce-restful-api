@@ -42,4 +42,18 @@ class BuyerTransformer extends TransformerAbstract
             'deletionDate' => isset($buyer->deleted_at) ? (string)$buyer->deleted_at : null
         ];
     }
+
+    public static function attributeMapper(string $key): ?string
+    {
+        $attributes = [
+            'identifier' => 'id',
+            'name' => 'name',
+            'email' => 'email',
+            'isVerified' => 'verified',
+            'creationDate' => 'created_at',
+            'lastChangeDate' => 'updated_at',
+            'deletionDate' => 'deleted_at',
+        ];
+        return $attributes[$key] ?? null;
+    }
 }
