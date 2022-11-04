@@ -41,4 +41,17 @@ class CategoryTransformer extends TransformerAbstract
             'deletionDate' => isset($category->deleted_at) ? (string)$category->deleted_at : null
         ];
     }
+
+    public static function attributeMapper(string $key): ?string
+    {
+        $attributes = [
+            'identifier' => 'id',
+            'name' => 'name',
+            'categoryDesc' => 'description',
+            'creationDate' => 'created_at',
+            'lastChangeDate' => 'updated_at',
+            'deletionDate' => 'deleted_at',
+        ];
+        return $attributes[$key] ?? null;
+    }
 }

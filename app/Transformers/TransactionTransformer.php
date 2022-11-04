@@ -42,4 +42,19 @@ class TransactionTransformer extends TransformerAbstract
             'deletionDate' => isset($transaction->deleted_at) ? (string)$transaction->deleted_at : null
         ];
     }
+
+    public static function attributeMapper(string $key): ?string
+    {
+        $attributes = [
+            'identifier' => 'id',
+            'name' => 'name',
+            'transactionBuyerIdentifier' => 'buyer_id',
+            'transactionProductIdentifier' => 'product_id',
+            'transactionQuantity' => 'quantity',
+            'creationDate' => 'created_at',
+            'lastChangeDate' => 'updated_at',
+            'deletionDate' => 'deleted_at',
+        ];
+        return $attributes[$key] ?? null;
+    }
 }
