@@ -31,6 +31,7 @@ trait ResponseHelper
             return $this->successResponse(['data' => $collection], $statusCode);
         }
         $transformer = $collection->first()->transformer;
+        $collection = $this->filterData($collection, $transformer);
         $collection = $this->sort($collection, $transformer);
         $collection = $this->transformData($collection, $transformer);
         $responseParams = ['data' => $collection, 'count' => $collection->count()];
@@ -58,6 +59,17 @@ trait ResponseHelper
                 $collection = $collection->sortByDesc($sortAttribute);
             } else {
                 $collection = $collection->sortBy($sortAttribute);
+            }
+        }
+        return $collection;
+    }
+
+    private function filterData(Collection $collection, $transformer): Collection
+    {
+        foreach(request()->query() as $key => $value) {
+            $actualAttribute = $transformer::attributeMapper($key);
+            if(isset($actualAttribute, $value)) {
+                $collection = $collection->where($actualAttribute, $value);
             }
         }
         return $collection;
