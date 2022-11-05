@@ -3,7 +3,10 @@
 namespace App\Traits;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Validator;
 
 trait ResponseHelper
 {
@@ -31,7 +34,13 @@ trait ResponseHelper
             return $this->successResponse(['data' => $collection], $statusCode);
         }
         $transformer = $collection->first()->transformer;
+        $collection = $this->filterData($collection, $transformer);
         $collection = $this->sort($collection, $transformer);
+
+        $total = $collection->count();
+
+        $collection = $this->paginate($collection);
+
         $collection = $this->transformData($collection, $transformer);
         $responseParams = ['data' => $collection, 'count' => $collection->count()];
         return $this->successResponse($responseParams, $statusCode);
@@ -61,5 +70,41 @@ trait ResponseHelper
             }
         }
         return $collection;
+    }
+
+    private function filterData(Collection $collection, $transformer): Collection
+    {
+        foreach(request()->query() as $key => $value) {
+            $actualAttribute = $transformer::attributeMapper($key);
+            if(isset($actualAttribute, $value)) {
+                $collection = $collection->where($actualAttribute, $value);
+            }
+        }
+        return $collection;
+    }
+
+    private function paginate(Collection $collection)
+    {
+        $rules = [
+            'per_page' => 'integer|min:10|max:100'
+        ];
+
+        Validator::validate(request()->all(), $rules);
+
+        $page = LengthAwarePaginator::resolveCurrentPage();
+        $elementsPerPage = 10; # Default Page Size is 15
+
+        # Update elements per page if there is query string present!
+        if(request()->has('per_page')) {
+            $elementsPerPage = (int)request()->per_page;
+        }
+        $results = $collection->slice($elementsPerPage*($page-1), $elementsPerPage)->values();
+
+        $options = [
+            'page' => LengthAwarePaginator::resolveCurrentPath()
+        ];
+        $paginator = new LengthAwarePaginator($results, $collection->count(), $elementsPerPage, $page, $options);
+        $paginator->appends(request()->all());
+        return $paginator;
     }
 }
