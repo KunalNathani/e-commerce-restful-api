@@ -42,6 +42,7 @@ trait ResponseHelper
         $collection = $this->paginate($collection);
 
         $collection = $this->transformData($collection, $transformer);
+        $collection = $this->cacheResponse($collection);
         $responseParams = ['data' => $collection, 'count' => $collection->count()];
         return $this->successResponse($responseParams, $statusCode);
     }
@@ -106,5 +107,18 @@ trait ResponseHelper
         $paginator = new LengthAwarePaginator($results, $collection->count(), $elementsPerPage, $page, $options);
         $paginator->appends(request()->all());
         return $paginator;
+    }
+
+    private function cacheResponse(mixed $data)
+    {
+        $url = request()->url();
+        $queryParams = request()->query();
+        ksort($queryParams);
+        $queryString = http_build_query($queryParams);
+        $fullUrl = "{$url}?{$queryString}";
+
+        return Cache::remember($fullUrl, 30, function() use($data) {
+            return $data;
+        });
     }
 }
