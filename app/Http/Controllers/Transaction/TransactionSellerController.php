@@ -9,6 +9,11 @@ use Illuminate\Http\Request;
 
 class TransactionSellerController extends ApiController
 {
+    public function __construct()
+    {
+        $this->middleware("client.credentials")->only(["index"]);
+    }
+
     public function index(Transaction $transaction): JsonResponse
     {
         $seller = $transaction->product->seller;
