@@ -10,6 +10,11 @@ use Illuminate\Support\Facades\Mail;
 
 class UsersController extends ApiController
 {
+    public function __construct()
+    {
+        $this->middleware("client.credentials")->only(["index", "store", "show", "resend"]);
+    }
+
     /**
      * Display a listing of the resource.
      *
