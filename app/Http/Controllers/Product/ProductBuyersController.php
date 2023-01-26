@@ -10,6 +10,11 @@ use Illuminate\Http\Request;
 
 class ProductBuyersController extends ApiController
 {
+    public function __construct()
+    {
+        $this->middleware("client.credentials")->only(["index"]);
+    }
+
     public function index(Product $product): JsonResponse
     {
         $buyers = $product->transactions()

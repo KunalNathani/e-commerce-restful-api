@@ -15,6 +15,11 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class ProductBuyerTransactionsController extends ApiController
 {
+    public function __construct()
+    {
+        $this->middleware("client.credentials")->only(["index"]);
+    }
+
     public function index(Product $product, Buyer $buyer): JsonResponse
     {
         $transactions = $product->transactions()
