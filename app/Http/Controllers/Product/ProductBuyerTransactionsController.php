@@ -18,6 +18,7 @@ class ProductBuyerTransactionsController extends ApiController
     public function __construct()
     {
         $this->middleware("client.credentials")->only(["index"]);
+        $this->middleware("auth:api")->only(["store"]);
     }
 
     public function index(Product $product, Buyer $buyer): JsonResponse
