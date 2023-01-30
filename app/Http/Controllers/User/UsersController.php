@@ -13,6 +13,7 @@ class UsersController extends ApiController
     public function __construct()
     {
         $this->middleware("client.credentials")->only(["index", "store", "show", "resend"]);
+        $this->middleware("auth:api")->only(["update", "destroy"]);
     }
 
     /**
