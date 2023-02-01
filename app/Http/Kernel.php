@@ -43,8 +43,8 @@ class Kernel extends HttpKernel
         ],
 
         'api' => [
-            'signature:X-Application-Name',
             CacheResponser::class,
+            'signature:X-Application-Name',
             // \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
             'throttle:10,1',
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
