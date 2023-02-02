@@ -13,10 +13,13 @@ class SellerBuyersController extends ApiController
     public function __construct()
     {
         $this->middleware("client.credentials")->only(["index"]);
+        $this->middleware("auth:api")->only(["index"]);
+        // $this->middleware("can:view,seller")->only(["index"]);
     }
 
     public function index(Seller $seller): JsonResponse
     {
+        $this->authorize("view", $seller);
         $buyers = $seller->products()
                         ->whereHas('transactions')
                         ->with('transactions.buyer')
