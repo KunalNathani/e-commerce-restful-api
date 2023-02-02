@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Transaction;
 
 use App\Http\Controllers\ApiController;
 use App\Models\Transaction;
+use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -12,6 +13,8 @@ class TransactionsController extends ApiController
     public function __construct()
     {
         $this->middleware("client.credentials")->only(["index", "show"]);
+        $this->middleware("auth:api")->only(["index", "show"]);
+        // $this->middleware("can:admin")->only(["index", "show"]);
     }
 
     /**
@@ -21,6 +24,7 @@ class TransactionsController extends ApiController
      */
     public function index()
     {
+        $this->authorize("admin", User::class);
         $transactions = Transaction::all();
         return $this->showAll($transactions);
     }
