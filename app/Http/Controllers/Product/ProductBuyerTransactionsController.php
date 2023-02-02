@@ -20,6 +20,9 @@ class ProductBuyerTransactionsController extends ApiController
         $this->middleware("client.credentials")->only(["index"]);
         $this->middleware("auth:api")->only(["store"]);
         $this->middleware("scope:purchase-product")->only(["store"]);
+
+        $this->middleware('can:view,buyer')->only(['index']);
+        $this->middleware('can:purchase,buyer')->only(['store']);
     }
 
     public function index(Product $product, Buyer $buyer): JsonResponse
@@ -32,7 +35,7 @@ class ProductBuyerTransactionsController extends ApiController
                                 ->get();
         return $this->showAll($transactions);
     }
-    public function store(Request $request, Product $product, User $buyer): JsonResponse
+    public function store(Request $request, Product $product, Buyer $buyer): JsonResponse
     {
         $rules = [
             'quantity' => 'required|integer|min:1'
